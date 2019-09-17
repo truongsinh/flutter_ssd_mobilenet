@@ -23,7 +23,7 @@ dependencies:
   tflite_native:
     git:
       url: https://github.com/truongsinh/tflite_native.git
-      ref: 732fa38
+      ref: d2458d1
   flutter:
     sdk: flutter
 

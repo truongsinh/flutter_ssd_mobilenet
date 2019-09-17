@@ -195,8 +195,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "732fa38"
-      resolved-ref: "732fa385d410878f1d9fbef0ad53fd5683c3e06e"
+      ref: d2458d1
+      resolved-ref: d2458d1a7590845ed5f440239a193c19d0eba51b
       url: "https://github.com/truongsinh/tflite_native.git"
     source: git
     version: "0.2.2"
