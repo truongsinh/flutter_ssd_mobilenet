@@ -202,8 +202,8 @@ echo(SendPort sendPort) async {
       final List<String> localLabels = msg[6];
 
       final imageDetectionStartTime = DateTime.now();
-      final processedImage = preprocessImage(camImage);
-      final imgData = processedImage.getBytes(format: Format.rgb);
+      final processedImage = PreProcessedImageData(camImage);
+      final imgData = processedImage.preProccessedImageBytes;
       final imageProcessingEndInferenceStarTime = DateTime.now();
 
       final result = detectObjectOnFrameSync(
@@ -220,10 +220,7 @@ echo(SendPort sendPort) async {
           inferenceEndTime.difference(imageProcessingEndInferenceStarTime);
       replyTo.send(DetectionResultDisplay(
         detections: result,
-        imageSize: Size(
-          processedImage.width.toDouble(),
-          processedImage.height.toDouble(),
-        ),
+        imageSize: processedImage.originalSize,
         imageProcessingDuration: imageProcessingDuration,
         inferenceDuration: inferenceDuration,
         detectionDuration: Duration(microseconds: 0),

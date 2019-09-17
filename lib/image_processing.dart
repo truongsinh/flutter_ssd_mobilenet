@@ -1,17 +1,31 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as imglib;
+import 'package:image/image.dart';
 
-imglib.Image preprocessImage(CameraImage camImg) {
-  final imgData640x480 = convertCameraImageToImageColor(camImg);
-  final imgData = imglib
-      .copyRotate(
-        imglib.copyResizeCropSquare(imgData640x480, 300),
-        // camera plugin on Android sucks
-        Platform.isAndroid ? 90 : 0,
-      );
-  return imgData;
+class PreProcessedImageData {
+  final Size originalSize;
+  final Uint8List preProccessedImageBytes;
+
+  PreProcessedImageData._(this.originalSize, this.preProccessedImageBytes);
+
+  factory PreProcessedImageData(CameraImage camImg) {
+    final rawRgbImage = convertCameraImageToImageColor(camImg);
+    final rgbImage = // camera plugin on Android sucks
+        Platform.isAndroid
+            ? imglib.copyRotate(
+                rawRgbImage,
+                90,
+              )
+            : rawRgbImage;
+    return PreProcessedImageData._(
+      Size(rgbImage.width.toDouble(), rgbImage.height.toDouble()),
+      imglib.copyResizeCropSquare(rgbImage, 300).getBytes(format: Format.rgb),
+    );
+  }
 }
 
 imglib.Image convertCameraImageToImageColor(CameraImage image) {
